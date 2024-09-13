@@ -4,3 +4,29 @@ GET {{BookStoreAPI_HostAddress}}/Books/
 Accept: application/json
 
 ###
+POST {{BookStoreAPI_HostAddress}}/Books/
+Accept: application/json
+Content-Type: application/json
+{
+  "id": 1,
+  "title": "Fishing Guide",
+  "author": "Joe Ma",
+  "publicationYear": 2050,
+  "isbn": "9788057066422",
+  "inStock": 100
+}
+
+###
+update {{BookStoreAPI_HostAddress}}/Books/
+Accept: application/json
+Content-Type: application/json
+{
+  "id": 1,
+  "title": "Fishing Guide",
+  "author": "Joe Ma",
+  "publicationYear": 2050,
+  "isbn": "9788057066422",
+  "inStock": 100
+}
+
+###

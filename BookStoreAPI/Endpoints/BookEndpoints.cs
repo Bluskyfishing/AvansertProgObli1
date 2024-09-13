@@ -13,7 +13,7 @@ namespace BookStoreAPI.Endpoints
 
             BookGroup.MapGet("", GetBooksAsync).WithName("GetBooks");
             BookGroup.MapPost("", AddBookAsync).WithName("AddBook");
-
+            BookGroup.MapPut("/{id}", UpdateBookAsync).WithName("UpdateBookAsync");
 
         }
 
@@ -33,7 +33,13 @@ namespace BookStoreAPI.Endpoints
                 ? Results.BadRequest("Failed to add database")
                 : Results.Ok(p);
         }
-
+        private static async Task<IResult> UpdateBookAsync(IBookRepository repo, int id, Book book)
+        {
+            var p = await repo.UpdateAsync(id, book);
+            return p is null
+                ? Results.BadRequest($"Failed to update book with id = '{id}'")
+                : Results.Ok(p);
+        }
 
     }
 }
