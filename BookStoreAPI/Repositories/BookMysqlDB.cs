@@ -35,5 +35,30 @@ namespace BookStoreAPI.Repositories
             }
             return bookList;
         }
+
+        public async Task<Book> AddAsync(Book book)
+        {
+            await using MySqlConnection conn = new(_connectionString);
+            conn.Open();
+
+            var preparedStatement = "INSERT INTO Book (Title, Author, PublicationYear, ISBN, InStock) " +
+                "VALUES (@Title, @Author, @PublicationYear, @ISBN, @InStock)"; //ID is autoincremented
+
+            MySqlCommand query = new(preparedStatement, conn);
+
+            query .Parameters.AddWithValue("@Title", book.Title);
+            query .Parameters.AddWithValue("@Author", book.Author);
+            query .Parameters.AddWithValue("@PublicationYear", book.PublicationYear);
+            query .Parameters.AddWithValue("@ISBN", book.ISBN);
+            query .Parameters.AddWithValue("@InStock", book.InStock);
+
+            await query.ExecuteNonQueryAsync();
+
+            query.CommandText = "SELECT LAST_INSERT_ID()";
+            book.ID = Convert.ToInt32(query.ExecuteScalar());
+
+            return book;
+        }
+
     }
 }
