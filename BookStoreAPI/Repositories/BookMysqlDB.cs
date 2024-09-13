@@ -59,6 +59,7 @@ namespace BookStoreAPI.Repositories
 
             return book;
         }
+
         public async Task<Book?> GetIDAsync(int id)
         {
             await using MySqlConnection conn = new(_connectionString);
@@ -85,13 +86,14 @@ namespace BookStoreAPI.Repositories
 
             return null;
         }
+
         public async Task<Book?> UpdateAsync(int id, Book book)
         {
             await using MySqlConnection conn = new(_connectionString);
             conn.Open();
 
             var preparedStatement = "UPDATE Book SET " +
-                "Title=@Title, Author=@Author, PublicationYear=@PublicationYear, ISBN=@ISBN, InStock=@InStock  WHERE ID=@id";
+                "Title=@Title, Author=@Author, PublicationYear=@PublicationYear, ISBN=@ISBN, InStock=@InStock  WHERE ID = @ID";
 
             MySqlCommand query = new(preparedStatement, conn);
 
@@ -101,6 +103,7 @@ namespace BookStoreAPI.Repositories
             query.Parameters.AddWithValue("@ISBN", book.ISBN);
             query.Parameters.AddWithValue("@InStock", book.InStock);
             query.Parameters.AddWithValue("@ID", id); 
+
             var rowEffectedCount = await query.ExecuteNonQueryAsync();
             if (rowEffectedCount == 0)
                 return null;
@@ -109,5 +112,25 @@ namespace BookStoreAPI.Repositories
 
         }
 
+        public async Task<Book?> DeleteAsync(int id)
+        {
+            var bookToDelete = await GetIDAsync(id);
+
+            await using MySqlConnection conn = new(_connectionString);
+            conn.Open();
+
+            var preparedStatement = "DELETE FROM Book Where ID = @id";
+
+            MySqlCommand query = new(preparedStatement, conn);
+
+            query.Parameters.AddWithValue("@ID", id);
+
+            var rowEffectedCount = await query.ExecuteNonQueryAsync();
+
+            if (rowEffectedCount > 0)
+                return bookToDelete;
+
+            return null;
+        }
     }
 }

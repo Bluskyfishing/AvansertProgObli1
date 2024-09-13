@@ -14,6 +14,7 @@ namespace BookStoreAPI.Endpoints
             BookGroup.MapGet("", GetBooksAsync).WithName("GetBooks");
             BookGroup.MapPost("", AddBookAsync).WithName("AddBook");
             BookGroup.MapPut("/{id}", UpdateBookAsync).WithName("UpdateBookAsync");
+            BookGroup.MapDelete("/{id}", DeleteBookAsync).WithName("DeleteBookAsync");
 
         }
 
@@ -33,6 +34,7 @@ namespace BookStoreAPI.Endpoints
                 ? Results.BadRequest("Failed to add database")
                 : Results.Ok(p);
         }
+
         private static async Task<IResult> UpdateBookAsync(IBookRepository repo, int id, Book book)
         {
             var p = await repo.UpdateAsync(id, book);
@@ -41,5 +43,12 @@ namespace BookStoreAPI.Endpoints
                 : Results.Ok(p);
         }
 
+        private static async Task<IResult> DeleteBookAsync(IBookRepository repo, int id)
+        {
+            var p = await repo.DeleteAsync(id);
+            return p is null
+                ? Results.BadRequest($"Can't find book with id = '{id}'")
+                : Results.Ok(p);
+        }
     }
 }

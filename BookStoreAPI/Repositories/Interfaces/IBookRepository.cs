@@ -5,9 +5,10 @@ namespace BookStoreAPI.Repositories.Interfaces
 {
     public interface IBookRepository
     {
-        Task<ICollection<Book>> GetAllAsync(); //Get every book
-        Task<Book?> AddAsync(Book book); //Add an book
+        Task<ICollection<Book>> GetAllAsync(); // Gets every book 
+        Task<Book?> AddAsync(Book book); // Adds a book
+        Task<Book?> UpdateAsync(int id, Book book); // Updates a book
+        Task<Book?> DeleteAsync(int id); // Deletes a book
 
-        Task<Book?> UpdateAsync(int id, Book book);
-    }   
+    }
 }

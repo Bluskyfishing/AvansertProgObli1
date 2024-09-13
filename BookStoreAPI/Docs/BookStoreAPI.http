@@ -7,6 +7,7 @@ Accept: application/json
 POST {{BookStoreAPI_HostAddress}}/Books/
 Accept: application/json
 Content-Type: application/json
+
 {
   "id": 1,
   "title": "Fishing Guide",
@@ -17,9 +18,10 @@ Content-Type: application/json
 }
 
 ###
-update {{BookStoreAPI_HostAddress}}/Books/
+PUT {{BookStoreAPI_HostAddress}}/Books/
 Accept: application/json
 Content-Type: application/json
+
 {
   "id": 1,
   "title": "Fishing Guide",
@@ -30,3 +32,4 @@ Content-Type: application/json
 }
 
 ###
+DELETE {{BookStoreAPI_HostAddress}}/Books/
