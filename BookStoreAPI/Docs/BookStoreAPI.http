@@ -4,6 +4,18 @@ GET {{BookStoreAPI_HostAddress}}/Books/
 Accept: application/json
 
 ###
+GET {{BookStoreAPI_HostAddress}}/Books?Title=[tittel]
+Accept: application/json
+
+###
+GET {{BookStoreAPI_HostAddress}}/Books?PublicationYear=2022
+Accept: application/json
+
+###
+GET {{BookStoreAPI_HostAddress}}/Books?Author=Ola
+Accept: application/json
+
+###
 POST {{BookStoreAPI_HostAddress}}/Books/
 Accept: application/json
 Content-Type: application/json
