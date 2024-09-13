@@ -36,7 +36,7 @@ namespace BookStoreAPI.Repositories
             return bookList;
         }
 
-        public async Task<Book> AddAsync(Book book)
+        public async Task<Book?> AddAsync(Book book)
         {
             await using MySqlConnection conn = new(_connectionString);
             conn.Open();
@@ -127,10 +127,7 @@ namespace BookStoreAPI.Repositories
 
             var rowEffectedCount = await query.ExecuteNonQueryAsync();
 
-            if (rowEffectedCount > 0)
-                return bookToDelete;
-
-            return null;
+            return bookToDelete;
         }
     }
 }

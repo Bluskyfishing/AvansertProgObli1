@@ -18,13 +18,36 @@ namespace BookStoreAPI.Endpoints
 
         }
 
-        private static async Task<IResult> GetBooksAsync([FromServices] IBookRepository repo, [FromQuery] int? id)
+        private static async Task<IResult> GetBooksAsync([FromServices] IBookRepository repo,
+            [FromQuery] int? id,
+            [FromQuery] int? PublicationYear,
+            [FromQuery] String? Title,
+            [FromQuery] String? Author)
         {
             var Books = await repo.GetAllAsync();
 
-            return id is null
-                ? Results.Ok(Books)
-                : Results.Ok(Books.Where(book => book.ID == id));
+            if (id.HasValue)
+            {
+                return Results.Ok(Books.Where(book => book.ID == id));
+            }
+            if (PublicationYear.HasValue)
+            {
+
+                return Results.Ok(Books.Where(book => book.PublicationYear == PublicationYear));
+            }
+            if (!String.IsNullOrEmpty(Title))
+            {
+                return Results.Ok(Books.Where(book => book.Title == Title));
+            }
+            if(!String.IsNullOrEmpty(Author))
+            {
+                return Results.Ok(Books.Where(book => book.Author == Author));
+            }
+            else
+            {
+                return Results.Ok(Books);
+            }
+
         }
 
         private static async Task<IResult> AddBookAsync(IBookRepository repo, Book book)
