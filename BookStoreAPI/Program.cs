@@ -1,17 +1,28 @@
 using BookStoreAPI.Endpoints;
+using BookStoreAPI.Middleware;
 using BookStoreAPI.Repositories;
 using BookStoreAPI.Repositories.Interfaces;
+using Serilog.Sinks.File;
+using Serilog;
+
 
 var builder = WebApplication.CreateBuilder(args);
+{
+    builder.Services
+            .AddSingleton<IBookRepository, BookMysqlDB>()
+            .AddSwaggerGen()
+            .AddEndpointsApiExplorer()
+            .AddExceptionHandler<GlobalExceptionHandling>()
+            .AddControllers();
 
-// Add services to the container.
+    Log.Logger = new LoggerConfiguration()
+        .MinimumLevel.Information()
+        .Enrich.FromLogContext()
+        .WriteTo.Console()
+        .WriteTo.File("Logs/logs-.txt", rollingInterval: RollingInterval.Hour)
+        .CreateLogger();
+}
 
-
-builder.Services
-        .AddSingleton<IBookRepository, BookMysqlDB>()
-        .AddSwaggerGen()
-        .AddEndpointsApiExplorer()
-        .AddControllers();
 
 var app = builder.Build();
 
@@ -22,7 +33,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseExceptionHandler(_ => { }) // adds exception handling to endpoints.
+   .UseHttpsRedirection();
 
 app.UseAuthorization();
 

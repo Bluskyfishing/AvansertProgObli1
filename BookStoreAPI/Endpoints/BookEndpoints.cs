@@ -1,6 +1,7 @@
 ﻿using BookStoreAPI.Models;
 using BookStoreAPI.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using System;
 
 namespace BookStoreAPI.Endpoints
@@ -52,6 +53,8 @@ namespace BookStoreAPI.Endpoints
 
         private static async Task<IResult> AddBookAsync(IBookRepository repo, Book book)
         {
+            Log.Information(messageTemplate: "Book added: {@Book}", book);
+
             var p = await repo.AddAsync(book);
             return p is null
                 ? Results.BadRequest("Failed to add database")
@@ -60,9 +63,11 @@ namespace BookStoreAPI.Endpoints
 
         private static async Task<IResult> UpdateBookAsync(IBookRepository repo, int id, Book book)
         {
+            Log.Information(messageTemplate: "Book updated: {@Book}", book);
+
             var p = await repo.UpdateAsync(id, book);
             return p is null
-                ? Results.BadRequest($"Failed to update book with id = '{id}'")
+                ? Results.BadRequest($"Failed to update book with id = '{id}'") 
                 : Results.Ok(p);
         }
 
