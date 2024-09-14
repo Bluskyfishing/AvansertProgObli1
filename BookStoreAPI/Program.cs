@@ -2,7 +2,6 @@ using BookStoreAPI.Endpoints;
 using BookStoreAPI.Middleware;
 using BookStoreAPI.Repositories;
 using BookStoreAPI.Repositories.Interfaces;
-using Serilog.Sinks.File;
 using Serilog;
 
 
