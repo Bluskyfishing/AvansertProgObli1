@@ -30,7 +30,7 @@ Content-Type: application/json
 }
 
 ###
-PUT {{BookStoreAPI_HostAddress}}/Books/
+PUT {{BookStoreAPI_HostAddress}}/Books/{id}
 Accept: application/json
 Content-Type: application/json
 
@@ -44,4 +44,4 @@ Content-Type: application/json
 }
 
 ###
-DELETE {{BookStoreAPI_HostAddress}}/Books/
+DELETE {{BookStoreAPI_HostAddress}}/Books/{id}
